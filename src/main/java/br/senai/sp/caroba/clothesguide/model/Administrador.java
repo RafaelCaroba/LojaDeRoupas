@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import br.senai.sp.caroba.clothesguide.util.HashUtil;
 import lombok.Data;
 
 // para gerar gets e sets
@@ -20,7 +21,7 @@ public class Administrador {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotEmpty
+	@NotEmpty // dá pra inserir uma mensagem de validação usando os () e aspas
 	private String nome;
 	
 	@Email
@@ -30,4 +31,12 @@ public class Administrador {
 	
 	@NotEmpty
 	private String senha;
+	
+	
+	
+	// sobrescrevendo método para setar senha usando hash
+	public void setSenha(String senha) {
+		// aplica o hash já setando a senha no objeto Administrador
+		this.senha = HashUtil.hash256(senha);
+	}
 }

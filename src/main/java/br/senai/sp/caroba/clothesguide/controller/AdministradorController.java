@@ -1,10 +1,19 @@
 package br.senai.sp.caroba.clothesguide.controller;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -44,4 +53,41 @@ public class AdministradorController {
 		}
 		return"redirect:formAdm";
 	}
+	
+	// request mapping para a lista, informando a pagina desejada
+	@RequestMapping(value = "listaAdm/{page}")
+	public String listar(Model model, @PathVariable("page") int page) {
+		// cria um pageble com 6 elementos por página, ordenando pelo nome e de forma ascendente
+		PageRequest pageable = PageRequest.of(page - 1, 6, Sort.by(Sort.Direction.ASC, "nome"));
+		// cria a página atual através do repository
+		Page<Administrador> pagina = repo.findAll(pageable);
+		int totalPages = pagina.getTotalPages();
+		// cria uma lista de inteiros para reprsentar as páginas
+		List<Integer> pageNumbers = new ArrayList<Integer>();
+		// preencher a lista com páginas
+		for (int i = 0; i < totalPages; i++) {
+			pageNumbers.add(i + 1);
+		}
+		model.addAttribute("admins", pagina.getContent());
+		model.addAttribute("paginaAtual", page);
+		model.addAttribute("totalPaginas", totalPages);
+		model.addAttribute("numPaginas" ,pageNumbers);
+		// retorna para o html da lista
+		return "administrador/listaAdm";
+	}
+	
+	@RequestMapping(value = "alterarAdm")
+	public String alterarAdm(Model model, Long id) {
+		Administrador adm = repo.findById(id).get();
+		model.addAttribute("adm", adm);
+		return "forward:formAdm";
+	}
+	
+	@RequestMapping(value = "excluirAdm")
+	public String excluirAdm(Long id, int page) {
+		repo.deleteById(id);
+		return "redirect:listaAdm/1";
+	}
+	
+	
 }

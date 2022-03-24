@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Lista de administradores</title>
+ <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/lista.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+   
+</head>
+
+ <style>
+ 	.pagination{
+	display: inline-block;
+	position: absolute;
+	top: 90%;
+	left: 40%;
+}   
+    
+ </style>
+ 
+ 
+<body>
+
+<div class="container">
+
+	<table border="1" class="tabela">
+		<thead>
+		<tr>
+			<th>Id</th>
+			<th>Nome</th>
+			<th>E-mail</th>
+			<th>Alterar</th>
+			<th>Excluir</th>
+		</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each="a: ${admins}">
+				<td th:text="${a.id}"></td>
+				<td th:text="${a.nome}"></td>
+				<td th:text="${a.email}"></td>
+				<td><a th:href="@{/alterarAdm(id=${a.id})}">Alterar Cadastro</a> </td>
+				<td><a th:href="@{/excluirAdm(id=${a.id}, page=${paginaAtual})}">Excluir</a> </td>
+			</tr>
+		</tbody>
+	</table>
+
+
+	
+		<ul class="pagination">
+			<li th:class="${paginaAtual == 1 ? 'disabled' : 'waves-effect'}">
+			<a th:href="${paginaAtual > 1 ? paginaAtual - 1 : '#'}">
+			<i class="material-icons">chevron_left</i></a></li>
+			
+			<li th:each="p: ${numPaginas}" th:class="${paginaAtual == p ? 'active #ff0043' : 'waves-effect'}">
+			<a th:href="${p}">
+			<span th:text="${p}"></span> </a> </li>
+			
+			<li th:class="${paginaAtual == totalPaginas ? 'disabled' : 'waves-effect'}">
+			<a th:href="${paginaAtual < totalPaginas ? paginaAtual + 1 : '#' }">
+			<i class="material-icons">chevron_right</i></a></li>
+		</ul>
+	
+</div>
+
+</body>
+</html>
