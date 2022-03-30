@@ -1,7 +1,6 @@
 package br.senai.sp.caroba.clothesguide.controller;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -20,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.senai.sp.caroba.clothesguide.model.Administrador;
 import br.senai.sp.caroba.clothesguide.repository.AdminRepository;
+import br.senai.sp.caroba.clothesguide.util.HashUtil;
 
 @Controller
 public class AdministradorController {
@@ -42,10 +42,32 @@ public class AdministradorController {
 			attr.addFlashAttribute("mensagemErro", "Verifique os campos.");
 			return "redirect:formAdm";
 		}
+		
+		// verifia se está ocorrendo uma alteração de cadastro
+		boolean alteracao = adm.getId() != null ? true : false;
+		
+		// verifica se a senha está vazia
+		if (adm.getSenha().equals(HashUtil.hash256(""))) {
+			// caso não seja alteração, define a primeira parte do email como senha
+			if (!alteracao) {
+				// extrai a parte do email antes do @
+				String parte = adm.getEmail().substring(0, adm.getEmail().indexOf("@"));
+				// define a senha do admin
+				adm.setSenha(parte);
+			} else {
+				// busca a senha atual
+			String hash = repo.findById(adm.getId()).get().getSenha();
+			// set a senha com hash
+			adm.setSenhaComHash(hash);
+			}
+		}
+		
 		try {
 			// salvar o Admin
 			repo.save(adm);
-			attr.addFlashAttribute("mensagemSucesso", "Administrador cadastrado com sucesso! Id: "+adm.getId());
+			attr.addFlashAttribute("mensagemSucesso", "Administrador salvo com sucesso! "
+					+ "Caso a senha não tenha sido informada no cadastro, será a parte do e-mail antes do @ "
+					+ "Id: "+adm.getId());
 			
 		} catch (Exception e) {
 			// caso haja algum erro, informa ao usuário

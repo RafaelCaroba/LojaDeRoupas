@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Cadastro de Tipo</title>
+
+<!-- CSS e JS -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<link rel="stylesheet" href="css/index.css" />
+
+</head>
+<body>
+
+	<div class="container">
+		<h2>Cadastro de Tipo de Loja</h2>
+		<div class="row">
+			<form action="salvarTipoLoja" method="post" class="col s12">
+				<div class="row">
+					<div class="input-field col s6">
+						<i class="material-icons prefix">store</i> 
+						<input id="icon_prefix" name="nome" type="text" class="validate"> 
+						<label for="icon_prefix">Nome</label>
+					</div>
+					
+					<div class="input-field col s6">
+						<i class="material-icons prefix">key</i> 
+						<input id="icon_prefix" name="palavrasChave" type="text" class="validate"> 
+						<label for="icon_prefix">Palavras-chave</label>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="input-field col s12">
+					<i class="material-icons prefix">description</i>
+						<textarea name="descricao" id="textarea1" class="materialize-textarea"></textarea>
+						<label for="textarea1">Descrição</label>
+					</div>
+				</div>
+				<button type="submit" class="btn"><i class="material-icons right">save</i>Salvar</button>
+			</form>
+		</div>
+		
+		<div th:replace="fragments/mensagem">
+    	</div>
+
+	</div>
+	
+
+</body>
+</html>

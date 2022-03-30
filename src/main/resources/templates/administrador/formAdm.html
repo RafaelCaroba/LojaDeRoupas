@@ -9,8 +9,15 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
      <link rel="stylesheet" href="css/index.css"/>
+     
+     <link rel="stylesheet" href="/css/sideBar.css"/>
+     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+     
 </head>
 <body>
+
+<nav th:replace="fragments/padrao :: sideBar"></nav>
+<script type="text/javascript" th:replace="fragments/padrao :: scriptSideBar"></script>
 
 <div class="container">	
 	<h2>Cadastro de Administrador</h2>
@@ -36,7 +43,7 @@
          <div class="input-field col s6">
           <i class="material-icons prefix">password</i>
          
-          <input id="icon_email" type="password" name="senha" class="validate" required="required">
+          <input id="icon_email" type="password" name="senha" class="validate" > <!-- th:value="${adm?.senha}" -->
           <label for="icon_email">Senha</label>
         </div>
        
