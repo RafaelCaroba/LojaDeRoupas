@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Tipos de lojas de roupa</title>
+<!-- <link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">  -->
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+
+<link rel="stylesheet" href="css/lista.css">
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+
+
+</head>
+
+<style>
+.pagination {
+	display: inline-block;
+	position: absolute;
+	top: 90%;
+	left: 44%;
+}
+
+.container nav .input-field {
+	width: 70%;
+	margin-bottom: 10px;
+}
+
+.formBusca {
+	display: inline-block;
+}
+</style>
+
+
+<body>
+
+	<div class="container">
+		<nav>
+			<div class="nav-wrapper">
+				<form action="/buscarTipo" class="formBusca">
+
+					<div class="input-field col s6">
+						<input id="search" type="search" name="palavraChave"> <label
+							class="label-icon" for="search"><i class="material-icons">search</i></label>
+						<i class="material-icons">close</i>
+					</div>
+
+
+					<div class="input-field col s12">
+						<select name="select">
+							<!-- 	<option value="" disabled selected>Choose your option</option>  -->
+							<option value="palavraChave">Palavra-chave</option>
+							<option value="nome">Nome</option>
+							<option value="descricao">Descrição</option>
+						</select> <label>Materialize Select</label>
+					</div>
+
+				</form>
+
+
+			<!-- 	<form method="get" action="/listarEscolas/1">
+					<label for="elementos">Escolha a quantidade de elementos da
+						lista</label> <select id="selectTotal" name="qtdItens"
+						onchange="changeSelect()">
+						<option value="-1">Selecione</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="4">4</option>
+						<option value="16">16</option>
+					</select>
+					
+					<button type="submit" value="ok"></button>
+				</form>  -->
+
+
+
+
+			</div>
+		</nav>
+
+		<table border="1" class="tabela">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Nome</th>
+					<th>Palavras-chave</th>
+					<th>Descrição</th>
+					<th>Alterar</th>
+					<th>Excluir</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="t: ${tipos}">
+					<td th:text="${t.id}"></td>
+					<td th:text="${t.nome}"></td>
+					<td th:text="${t.palavrasChave}"></td>
+					<td th:text="${t.descricao}"></td>
+					<td><a th:href="@{/alterarTipoLoja(id=${t.id})}">Alterar
+							Cadastro</a></td>
+					<td><a
+						th:href="@{/excluirTipoLoja(id=${t.id}, page=${paginaAtual})}">Excluir</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+
+
+		<ul class="pagination">
+			<li th:class="${paginaAtual == 1 ? 'disabled' : 'waves-effect'}">
+				<a th:href="${paginaAtual > 1 ? paginaAtual - 1 : '#'}"> <i
+					class="material-icons">chevron_left</i></a>
+			</li>
+
+			<li th:each="p: ${numPaginas}"
+				th:class="${paginaAtual == p ? 'active #ff0043' : 'waves-effect'}">
+				<a th:href="${p}"> <span th:text="${p}"></span>
+			</a>
+			</li>
+
+			<li
+				th:class="${paginaAtual == totalPaginas ? 'disabled' : 'waves-effect'}">
+				<a th:href="${paginaAtual < totalPaginas ? paginaAtual + 1 : '#' }">
+					<i class="material-icons">chevron_right</i>
+			</a>
+			</li>
+		</ul>
+
+	</div>
+
+
+
+	<script>
+		$(document).ready(function() {
+			$('select').formSelect();
+		});
+	</script>
+
+</body>
+
+</html>

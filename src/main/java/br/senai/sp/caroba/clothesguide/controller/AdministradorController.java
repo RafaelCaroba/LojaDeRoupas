@@ -108,7 +108,7 @@ public class AdministradorController {
 	@RequestMapping(value = "excluirAdm")
 	public String excluirAdm(Long id, int page) {
 		repo.deleteById(id);
-		return "redirect:listaAdm/1";
+		return "redirect:listaAdm/"+page;
 	}
 	
 	
