@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Cadastro de loja</title>
+<link rel="stylesheet" href="/css/formLoja.css">
+<link rel="script" href="../consulta.js" />
+</head>
+<body>
+
+	<div class="form-container">
+
+		</head>
+		<body>
+			<form action="#" method="GET">
+
+				
+					<h4>Formulário</h4>
+		<div class="row">
+					 <input type="text" id="nome" name="nomeLoja"
+						required placeholder="Nome"> <br>
+						
+						<label class="tipo">Tipo de Loja:</label> 
+					<select name="tipoLoja">
+						<option th:each="t: ${tipos}" value="${t.id}" th:text="${t.nome}"></option>
+					</select>
+		</div>			
+			
+					
+		<div class="row">
+			<input type="text" id="cep" name="cep" required placeholder="Digite o CEP">
+			
+			<input type="text" id="logradouro" name="rua" required placeholder="Rua" readonly="readonly">
+		</div>				 
+				
+		<div class="row">
+			<input type="text" name="bairro" id="bairro" required placeholder="Bairro" readonly="readonly">
+			
+			<input type="text" name="cidade" id="localidade" required placeholder="Cidade">
+		</div>		
+		
+		<div class="row">
+			<input type="text" name="numero" id="numero" required="required" placeholder="Número"> 
+			
+			<input type="text" name="estado" id="uf" required placeholder="Estado">
+		</div>
+
+	</form>
+	</div>
+	
+	<script src="../consulta.js"></script>
+
+</body>
+</html>
+</body>
+</html>

@@ -19,5 +19,5 @@ public interface TipoLojaRepository extends PagingAndSortingRepository<TipoLojaR
 	@Query("SELECT t FROM TipoLojaRoupa t WHERE t.descricao LIKE %:desc%")
 	public List<TipoLojaRoupa> procurarDescricao(@Param("desc") String palavraChave);
 
-
+	public List<TipoLojaRoupa> findAllByOrderByNomeAsc();
 }
