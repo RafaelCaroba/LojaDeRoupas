@@ -28,7 +28,7 @@ public class Loja {
 	private String complemento;
 	private String cidade;
 	private String estado;
-	private String formasPagamento;
+	private boolean formasPagamento;
 	
 	@Column(columnDefinition = "TEXT")
 	private String descricao;
