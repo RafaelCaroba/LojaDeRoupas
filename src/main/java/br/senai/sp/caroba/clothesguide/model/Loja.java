@@ -28,7 +28,10 @@ public class Loja {
 	private String complemento;
 	private String cidade;
 	private String estado;
-	private boolean formasPagamento;
+	private boolean pagDinheiro;
+	private boolean pagCredito;
+	private boolean pagDebito;
+	private boolean pagPix;
 	
 	@Column(columnDefinition = "TEXT")
 	private String descricao;
@@ -37,6 +40,11 @@ public class Loja {
 	private String redesSociais;
 	private String telefone;
 	private String fotos;
+	
+	
+	public String[] verFotos() {
+		return this.fotos.split(";");
+	}
 	
 	
 }

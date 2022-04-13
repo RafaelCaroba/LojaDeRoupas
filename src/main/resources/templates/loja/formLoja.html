@@ -7,6 +7,9 @@
 <link rel="script" href="/consulta.js" />
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
+	
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
 </head>
 <body>
 
@@ -18,65 +21,87 @@
 				
 					<h2>Formulário</h2>
 		<div class="row">
-			<input type="hidden" name="id" > 
+			<input type="hidden" name="id" th:value="${loja?.id}"> 
 		
 					 <input type="text" id="nome" name="nomeLoja"
-						required placeholder="Nome"> <br>
+						required placeholder="Nome" th:value="${loja?.nomeLoja}"> <br>
 						
 						<label class="tipo">Tipo de Loja:</label> 
 					<select name="tipoLoja.id">
-						<option th:each="t: ${tipos}" th:value="${t.id}" th:text="${t.nome}">
+						<option th:each="t: ${tipos}" th:value="${t.id}" 
+							th:selected="${t.id == loja?.tipoLoja?.id}" th:text="${t.nome}">
 						</option>
 					</select>
 		</div>			
 			
 					
 		<div class="row">
-			<input type="text" id="cep" name="cep" required placeholder="Digite o CEP">
+			<input type="text" id="cep" name="cep" required placeholder="Digite o CEP" th:value="${loja?.cep}">
 			
-			<input type="text" id="logradouro" name="endereco" required placeholder="Rua" readonly="readonly">
+			<input type="text" id="logradouro" name="endereco" 
+				required placeholder="Rua" th:value="${loja?.endereco}" readonly="readonly">
 		</div>				 
 				
 		<div class="row">
-			<input type="text" name="bairro" id="bairro" required placeholder="Bairro" readonly="readonly">
+			<input type="text" name="bairro" id="bairro" 
+				required placeholder="Bairro" th:value="${loja?.bairro}" readonly="readonly">
 			
-			<input type="text" name="cidade" id="localidade" required placeholder="Cidade">
+			<input type="text" name="cidade" id="localidade" 
+				required placeholder="Cidade" th:value="${loja?.cidade}">
 		</div>		
 		
 		<div class="row">
-			<input type="text" name="numero" id="numero" required="required" placeholder="Número"> 
+			<input type="text" name="numero" th:value="${loja?.numero}"
+				id="numero" required="required" placeholder="Número"> 
 			
-			<input type="text" name="estado" id="uf" required placeholder="Estado">
+			<input type="text" name="estado" th:value="${loja?.estado}"
+				id="uf" required placeholder="Estado">
 		</div>
 		
 		<div class="row">
-			<input type="text" name="complemento" required="required" placeholder="Complemento"> 
+			<input type="text" name="complemento" placeholder="Complemento" th:value="${loja?.complemento}"> 
 			
 			<input type="file" name="fileFotos" multiple accept="image/*">
+		</div>
+		
+		<div class="row" th:if="${loja?.fotos?.length > 0}">
+			<h6>Fotos cadastradas: </h6>
+			<div>
+				<ul class="lista_fotos">
+					<li th:each="foto, i : ${loja?.verFotos()}">
+						<a th:href="${foto}" target="_blank"><img th:src="${foto}"></a>
+						<a th:href="@{/excluirFotoLoja(idLoja=${loja.id}, numFoto = ${i.index})}">
+							<i class="material-icons">delete_forever</i>
+						</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 		
 		<div class="row pagamento">
 			
 			<label>Dinheiro</label>
-			<input type="checkbox" name="formasPagamento">
+			<input type="checkbox" name="pagDinheiro" th:checked="${loja?.pagDinheiro}">
 			
 			<label for="formasPagamento">Crédito</label>
-			<input type="checkbox" name="formasPagamento">
+			<input type="checkbox" name="pagCredito" th:checked="${loja?.pagCredito}">
 			
 			<label for="formasPagamento">Débito</label>
-			<input type="checkbox" name="formasPagamento">
+			<input type="checkbox" name="pagDebito" th:checked="${loja?.pagDebito}">
 			
 			<label for="formasPagamento">PIX</label>
-			<input type="checkbox" name="formasPagamento">
+			<input type="checkbox" name="pagPix" th:checked="${loja?.pagPix}">
 			
 		</div>
 		
 		<div class="row">
-		<textarea name="descricao" rows="10" cols="100" required="required" placeholder="Descreva a sua Loja:"></textarea>
+		<textarea name="descricao" rows="10" cols="100" 
+			required placeholder="Descreva a sua Loja:" th:text="${loja?.descricao}"></textarea>
 		</div>
 		
 		<div class="row">
-			<input type="text" name="site" required="required" placeholder="Site"> 
+			<input type="text" name="site" 
+				required placeholder="Site" th:value="${loja?.site}"> 
 		
 			<input type="text" name="telefone" required="required" placeholder="telefone"> 
 		</div>

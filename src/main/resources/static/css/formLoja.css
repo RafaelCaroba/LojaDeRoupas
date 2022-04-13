@@ -89,3 +89,13 @@ input:focus{
 	outline: none;
 	border: none;
 }
+
+.lista_fotos{
+	display:flex;
+	justify-content:left;
+	list-style: none;
+}
+
+.lista_fotos img{
+	width: 70px;	
+}
