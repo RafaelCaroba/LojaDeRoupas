@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Tipos de lojas de roupa</title>
- <link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">  
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
@@ -17,14 +17,15 @@
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
-
+<link rel="stylesheet" href="/css/sideBar.css" />
+<link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css'
+	rel='stylesheet'>
 
 </head>
 
 <style>
-.container{
+.container {
 	width: 85%;
-	
 }
 
 .pagination {
@@ -43,13 +44,17 @@
 	display: inline-block;
 }
 
-td, th{
+td, th {
 	text-align: center;
 }
 </style>
 
 
 <body>
+
+	<nav th:replace="fragments/padrao :: sideBar"></nav>
+	<script type="text/javascript"
+		th:replace="fragments/padrao :: scriptSideBar"></script>
 
 	<div class="container">
 		<nav>
@@ -58,12 +63,12 @@ td, th{
 
 					<div class="input-field col s12">
 						<input id="search" type="search" name="palavraChave"> <label
-	 						class="label-icon" for="search"><i class="material-icons">search</i></label>
+							class="label-icon" for="search"><i class="material-icons">search</i></label>
 						<i class="material-icons">close</i>
 					</div>
 
 
-				<!--	<div class="input-field col s4">
+					<!--	<div class="input-field col s4">
 						<select name="select">
 							<option value="" disabled selected>Choose your option</option>  
 							<option value="palavraChave">Palavra-chave</option>
@@ -75,7 +80,7 @@ td, th{
 				</form>
 
 
-			<!-- 	<form method="get" action="/listarEscolas/1">
+				<!-- 	<form method="get" action="/listarEscolas/1">
 					<label for="elementos">Escolha a quantidade de elementos da
 						lista</label> <select id="selectTotal" name="qtdItens"
 						onchange="changeSelect()">
@@ -125,9 +130,7 @@ td, th{
 					<td th:text="${l.redesSociais}"></td>
 					<td><a th:href="@{/alterarLoja(id=${l.id})}">Alterar
 							Cadastro</a></td>
-					<td><a
-						>Excluir</a>
-					</td>
+					<td><a th:href="@{/excluirLoja(id=${l.id})}">Excluir</a></td>
 				</tr>
 			</tbody>
 		</table>

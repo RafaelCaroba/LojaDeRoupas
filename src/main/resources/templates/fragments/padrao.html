@@ -34,7 +34,7 @@
                     <input type="text" placeholder="Search...">
                 </li>
 
-                <ul class="menu-links">
+                <ul th:if="${session.usuarioLogado != null}" class="menu-links">
                     <li class="nav-link">
                         <a href="#">
                             <i class='bx bx-home-alt icon' ></i>
@@ -82,7 +82,7 @@
 
             <div class="bottom-content">
                 <li class="">
-                    <a href="#">
+                    <a href="/logout">
                         <i class='bx bx-log-out icon' ></i>
                         <span class="text nav-text">Logout</span>
                     </a>

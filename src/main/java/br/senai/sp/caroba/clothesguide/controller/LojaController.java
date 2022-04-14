@@ -44,7 +44,7 @@ public class LojaController {
 	@RequestMapping(value = "salvarLoja")
 	public String salvarLoja(Loja loja,@RequestParam("fileFotos") MultipartFile[] fileFotos) {
 		// String para url das fotos
-		String fotos = "";
+		String fotos = loja.getFotos();
 		
 		// percorrer o vetor de bytes de cada arquivo que for submetido pelo form
 		for (MultipartFile arquivo : fileFotos) {
@@ -54,7 +54,7 @@ public class LojaController {
 			}
 			// faz o upload para a nuvem e obtém a url gerada
 			try {
-				fotos += firebaseUtil.uploadFile(arquivo)+"";
+				fotos += firebaseUtil.uploadFile(arquivo)+";";
 			} catch (IOException e) {
 				e.printStackTrace();
 				throw new RuntimeException(e);
@@ -116,6 +116,19 @@ public class LojaController {
 		
 		model.addAttribute("loja", loja);
 		return "forward:formLoja";
+	}
+	
+	@RequestMapping(value = "excluirLoja")
+	public String excluirLoja(Long id){
+		Loja loja = lojaRepo.findById(id).get();
+		if (loja.getFotos().length() > 0) {
+			for (String foto : loja.verFotos()) {
+				firebaseUtil.deletar(foto);
+			}
+		}
+		
+		lojaRepo.delete(loja);
+		return "redirect:/listarLoja/10/1";
 	}
 	
 }

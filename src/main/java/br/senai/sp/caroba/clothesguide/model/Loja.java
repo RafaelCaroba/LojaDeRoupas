@@ -39,6 +39,7 @@ public class Loja {
 	private String site;
 	private String redesSociais;
 	private String telefone;
+	@Column(columnDefinition = "TEXT")
 	private String fotos;
 	
 	

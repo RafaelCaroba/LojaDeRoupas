@@ -44,17 +44,17 @@
 				
 		<div class="row">
 			<input type="text" name="bairro" id="bairro" 
-				required placeholder="Bairro" th:value="${loja?.bairro}" readonly="readonly">
+				required placeholder="Bairro" th:value="${loja?.bairro}" readonly>
 			
 			<input type="text" name="cidade" id="localidade" 
-				required placeholder="Cidade" th:value="${loja?.cidade}">
+				required placeholder="Cidade" readonly th:value="${loja?.cidade}">
 		</div>		
 		
 		<div class="row">
 			<input type="text" name="numero" th:value="${loja?.numero}"
 				id="numero" required="required" placeholder="Número"> 
 			
-			<input type="text" name="estado" th:value="${loja?.estado}"
+			<input type="text" name="estado" readonly th:value="${loja?.estado}"
 				id="uf" required placeholder="Estado">
 		</div>
 		
@@ -62,6 +62,8 @@
 			<input type="text" name="complemento" placeholder="Complemento" th:value="${loja?.complemento}"> 
 			
 			<input type="file" name="fileFotos" multiple accept="image/*">
+			
+			<input type="hidden" th:value="${rstaurante?.fotos}" name="fotos">
 		</div>
 		
 		<div class="row" th:if="${loja?.fotos?.length > 0}">
@@ -101,9 +103,9 @@
 		
 		<div class="row">
 			<input type="text" name="site" 
-				required placeholder="Site" th:value="${loja?.site}"> 
+				 placeholder="Site" th:value="${loja?.site}"> 
 		
-			<input type="text" name="telefone" required="required" placeholder="telefone"> 
+			<input type="text" name="telefone" th:value="${loja?.telefone}" placeholder="telefone"> 
 		</div>
 		
 		<div class="row">

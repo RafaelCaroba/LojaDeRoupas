@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Bem-vindo!</title>
+<link rel="stylesheet" href="/css/sideBar.css"/>
+<link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+ <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style type="text/css">
+
+
+
+</style>
+</head>
+<body>
+
+<nav th:replace="fragments/padrao :: sideBar"></nav>
+<script type="text/javascript" th:replace="fragments/padrao :: scriptSideBar"></script>
+
+    
+    <div class="home">	
+	<h2>Login de Administrador</h2>
+	<div class="row">
+    <form class="col s12" action="login" method="post">
+      <div class="row">
+        
+       
+        <div class="input-field col s6">
+          <i class="material-icons prefix">email</i>
+          
+          <input id="icon_email" type="email" name="email" class="validate" 
+          	required="required" >
+          <label for="icon_email">E-mail:</label>
+        </div>
+        
+         <div class="input-field col s6">
+          <i class="material-icons prefix">password</i>
+         
+          <input id="icon_email" type="password" name="senha" class="validate" > <!-- th:value="${adm?.senha}" -->
+          <label for="icon_email">Senha</label>
+        </div>
+       
+      </div>
+      
+       <button type="submit" class="btn"><i class="material-icons right">save</i>Entrar  </button>
+    </form>
+    
+  </div>
+  
+  		<div th:replace="fragments/mensagem">
+    	</div>
+  
+</div>
+
+<script>
+        const body = document.querySelector('body'),
+      sidebar = body.querySelector('nav'),
+      toggle = body.querySelector(".toggle"),
+      searchBtn = body.querySelector(".search-box"),
+      modeSwitch = body.querySelector(".toggle-switch"),
+      modeText = body.querySelector(".mode-text");
+
+
+toggle.addEventListener("click" , () =>{
+    sidebar.classList.toggle("close");
+})
+
+searchBtn.addEventListener("click" , () =>{
+    sidebar.classList.remove("close");
+})
+
+modeSwitch.addEventListener("click" , () =>{
+    body.classList.toggle("dark");
+    
+    if(body.classList.contains("dark")){
+        modeText.innerText = "Light mode";
+    }else{
+        modeText.innerText = "Dark mode";
+        
+    }
+});
+    </script>
+</body>
+</html>

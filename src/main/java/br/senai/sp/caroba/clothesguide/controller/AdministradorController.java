@@ -3,6 +3,7 @@ package br.senai.sp.caroba.clothesguide.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.senai.sp.caroba.clothesguide.annotation.Publico;
 import br.senai.sp.caroba.clothesguide.model.Administrador;
 import br.senai.sp.caroba.clothesguide.repository.AdminRepository;
 import br.senai.sp.caroba.clothesguide.util.HashUtil;
@@ -104,6 +106,33 @@ public class AdministradorController {
 		model.addAttribute("adm", adm);
 		return "forward:formAdm";
 	}
+	
+	@Publico
+	@RequestMapping(value = "login")
+	public String login(Administrador admLogin, RedirectAttributes attr, HttpSession session) {
+		// buscar o adm no BD através do email e da senha
+		Administrador adm = repo.findByEmailAndSenha(admLogin.getEmail(), admLogin.getSenha());
+		// verifica se existe o admin
+		if (adm == null) {
+			// avisa ao usuario
+			attr.addFlashAttribute("mensagemErro", "Login e/ou senha inválidos");
+			return "redirect:/";
+		} else {
+			// se não for nulo, salva na sessão e acessa o sistema
+			session.setAttribute("usuarioLogado", adm);
+			return "redirect:/listarLoja/10/1";
+		}
+		
+	}
+	
+	@RequestMapping(value = "logout")
+	public String logout(HttpSession session){
+		// eliminar user da session
+		session.invalidate();
+		// retorna para a pag inicial
+		return "redirect:/";
+	}
+	
 	
 	@RequestMapping(value = "excluirAdm")
 	public String excluirAdm(Long id, int page) {
