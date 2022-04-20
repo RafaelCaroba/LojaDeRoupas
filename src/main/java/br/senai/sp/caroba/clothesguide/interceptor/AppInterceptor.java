@@ -10,21 +10,21 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import br.senai.sp.caroba.clothesguide.annotation.Publico;
 
 @Component
-public class AppInterceptor implements HandlerInterceptor{
+public class AppInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		// var para descobrir onde o user está tentando ir
 		String uri = request.getRequestURI();
 		System.out.println(uri);
-		
+
 		// verifica se o handler é um handler method
-		// indica que foi encontrado algum método no controller 
+		// indica que foi encontrado algum método no controller
 		// para a req.
-		
+
 		if (handler instanceof HandlerMethod) {
 			// liberar o acesso à pagina inicial
-		
+
 			if (uri.equals("/")) {
 				return true;
 			}
@@ -33,18 +33,23 @@ public class AppInterceptor implements HandlerInterceptor{
 			}
 			// fazer casting para handlreMethod
 			HandlerMethod metodoChamado = (HandlerMethod) handler;
-			
-			// se o método for publico, libera
-			if (metodoChamado.getMethodAnnotation(Publico.class) !=null) {
-				return true;
-			}
-			// verificar se existe um user logado
-			if (request.getSession().getAttribute("usuarioLogado") != null) {
+
+			if (uri.startsWith("/api")) {
 				return true;
 			} else {
-				// red. para a pag inicial
-				response.sendRedirect("/");
-				return false;
+
+				// se o método for publico, libera
+				if (metodoChamado.getMethodAnnotation(Publico.class) != null) {
+					return true;
+				}
+				// verificar se existe um user logado
+				if (request.getSession().getAttribute("usuarioLogado") != null) {
+					return true;
+				} else {
+					// red. para a pag inicial
+					response.sendRedirect("/");
+					return false;
+				}
 			}
 		}
 		return true;
