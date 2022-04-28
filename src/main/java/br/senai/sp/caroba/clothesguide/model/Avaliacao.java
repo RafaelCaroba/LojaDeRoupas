@@ -1,32 +1,40 @@
 package br.senai.sp.caroba.clothesguide.model;
 
-import javax.persistence.Column;
+import java.util.Calendar;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-import br.senai.sp.caroba.clothesguide.util.HashUtil;
 import lombok.Data;
 
-@Entity
 @Data
-public class Usuario {
+@Entity
+public class Avaliacao {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String nome;
 	
-	@Column(unique = true)
-	private String email;
-	
+	@ManyToOne
 	@JsonProperty(access = Access.WRITE_ONLY)
-	private String senha;
+	private Loja loja;
 	
-	public void setSenha(String senha) {
-		this.senha = HashUtil.hash256(senha);
-	}
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private Calendar dataVisita;
+	
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private Calendar dataAvaliacao;
+	private String comentario;
+	private double nota;
+	
+	@ManyToOne
+	private Usuario usuario;
+	
+	
 }
