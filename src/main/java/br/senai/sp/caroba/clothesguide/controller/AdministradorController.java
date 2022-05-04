@@ -108,7 +108,7 @@ public class AdministradorController {
 	}
 	
 	@Publico
-	@RequestMapping(value = "login")
+	@RequestMapping(value = "loginAdm")
 	public String login(Administrador admLogin, RedirectAttributes attr, HttpSession session) {
 		// buscar o adm no BD através do email e da senha
 		Administrador adm = repo.findByEmailAndSenha(admLogin.getEmail(), admLogin.getSenha());

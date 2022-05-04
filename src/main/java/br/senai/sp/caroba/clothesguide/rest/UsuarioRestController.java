@@ -1,6 +1,9 @@
 package br.senai.sp.caroba.clothesguide.rest;
 
 import java.net.URI;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,10 +16,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+
 import br.senai.sp.caroba.clothesguide.annotation.Privado;
 import br.senai.sp.caroba.clothesguide.annotation.Publico;
 import br.senai.sp.caroba.clothesguide.model.Erro;
 import br.senai.sp.caroba.clothesguide.model.Sucesso;
+import br.senai.sp.caroba.clothesguide.model.TokenJWT;
 import br.senai.sp.caroba.clothesguide.model.Usuario;
 import br.senai.sp.caroba.clothesguide.repository.UsuarioRepository;
 
@@ -24,6 +32,11 @@ import br.senai.sp.caroba.clothesguide.repository.UsuarioRepository;
 @RestController
 @RequestMapping(value = "/api/usuario")
 public class UsuarioRestController {
+	
+	// constantes para geração de token
+	public static final String EMISSOR = "Senai";
+	public static final String SECRET = "Cl0thesGu1de";
+	
 
 	@Autowired
 	private UsuarioRepository repository;
@@ -108,6 +121,39 @@ public class UsuarioRestController {
 		msg.setMensagem("Usuário deletado com sucesso.");
 		
 		return new ResponseEntity<Object>(msg, header, HttpStatus.OK);
+	}
+	
+	@Publico
+	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<TokenJWT> logar(@RequestBody Usuario usuario){
+		// buscar o usuario no BD
+		usuario = repository.findByEmailAndSenha(usuario.getEmail(),usuario.getSenha());
+		
+		// verifica se o usuario existe
+		if (usuario != null) {
+			// valores adicionais para o token
+			Map<String, Object> payload = new HashMap<String, Object>();
+			payload.put("id_usuario", usuario.getId());
+			payload.put("nome_usuario", usuario.getNome());	
+			
+			// definir a data de expiração do token
+			Calendar expiracao = Calendar.getInstance();
+			expiracao.add(Calendar.HOUR, 1);
+			
+			// algoritmo para assinar o token
+			Algorithm algoritmo = Algorithm.HMAC256(SECRET);
+			
+			// gerar o token
+			TokenJWT tokenJwt = new TokenJWT();
+			tokenJwt.setToken
+			(JWT.create().withPayload(payload).withIssuer(EMISSOR)
+					.withExpiresAt(expiracao.getTime()).sign(algoritmo));
+			
+			return ResponseEntity.ok(tokenJwt);
+			
+		} else {
+			return new ResponseEntity<TokenJWT>(HttpStatus.UNAUTHORIZED);
+		}
 	}
 	
 }

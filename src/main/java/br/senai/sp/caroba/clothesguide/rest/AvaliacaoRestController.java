@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.senai.sp.caroba.clothesguide.annotation.Privado;
 import br.senai.sp.caroba.clothesguide.annotation.Publico;
 import br.senai.sp.caroba.clothesguide.model.Avaliacao;
 import br.senai.sp.caroba.clothesguide.repository.AvaliacaoRepository;
@@ -22,6 +23,7 @@ public class AvaliacaoRestController {
 	@Autowired
 	private AvaliacaoRepository repository;
 	
+	@Privado
 	@RequestMapping(value = "", method = RequestMethod.POST, 
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Avaliacao> criarAvaliacao(@RequestBody Avaliacao avaliacao){

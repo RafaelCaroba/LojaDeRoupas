@@ -1,13 +1,24 @@
 package br.senai.sp.caroba.clothesguide.interceptor;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
+
+import br.senai.sp.caroba.clothesguide.annotation.Privado;
 import br.senai.sp.caroba.clothesguide.annotation.Publico;
+import br.senai.sp.caroba.clothesguide.rest.UsuarioRestController;
 
 @Component
 public class AppInterceptor implements HandlerInterceptor {
@@ -35,6 +46,34 @@ public class AppInterceptor implements HandlerInterceptor {
 			HandlerMethod metodoChamado = (HandlerMethod) handler;
 
 			if (uri.startsWith("/api")) {
+				// quando a req começar com /api
+				// var para o token
+				String token = null;
+
+				// se for um metodo privado
+				if (metodoChamado.getMethodAnnotation(Privado.class) != null) {
+					try {
+						// obtém o token da req
+						token = request.getHeader("Authorization");
+						Algorithm algoritmo = Algorithm.HMAC256(UsuarioRestController.SECRET);
+						JWTVerifier verifier = JWT.require(algoritmo).withIssuer(UsuarioRestController.EMISSOR)
+								.build();
+						DecodedJWT jwt = verifier.verify(token);
+
+						// extrair os dados do payload
+						Map<String, Claim> payload = jwt.getClaims();
+						return true;
+					} catch (Exception e) {
+						if (token == null) {
+							response.sendError(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+						} else {
+							response.sendError(HttpStatus.FORBIDDEN.value(), e.getMessage());
+						}
+						return false;
+					}
+
+				}
+
 				return true;
 			} else {
 
